@@ -2,68 +2,108 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>NewTube Emulator</title>
+    <title>For You Page</title>
     <style>
-        /* Your CSS styles go here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #FF0000; /* Red header like YouTube */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .video {
+            margin: 20px;
+        }
+
+        iframe {
+            width: 320px;
+            height: 180px;
+        }
+
+        h2 {
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>NewTube Emulator</h1>
+        <h1>For You Page</h1>
     </header>
     <main>
-        <div id="search-container">
-            <input type="text" id="search-input" placeholder="Search for videos">
-            <button id="search-button">Search</button>
-        </div>
         <div id="video-container">
-            <!-- Video results will be displayed here -->
+            <!-- Random video recommendations will be displayed here -->
         </div>
     </main>
-    <script src="https://www.googleapis.com/youtube/v3/"></script> <!-- Include the YouTube Data API library -->
+    <script src="https://www.googleapis.com/youtube/v3/"></script>
     <script>
-        // Replace 'YOUR_API_KEY' with your actual API key
+        // Replace 'YOUR_API_KEY' with the provided API key
         const apiKey = 'AIzaSyCmbY8cHUDc5lja1u29BW43GVXEEVxFW5I';
+        const maxResults = 10;
 
-        document.getElementById('search-button').addEventListener('click', () => {
-            const query = document.getElementById('search-input').value;
-            searchYouTube(query);
-        });
+        function fetchRandomVideos() {
+            const videoContainer = document.getElementById('video-container');
+            videoContainer.innerHTML = '';
 
-        function searchYouTube(query) {
             gapi.client.init({
-                apiKey: apiKey,
+                apiKey: apiKey
             }).then(function () {
                 return gapi.client.request({
                     path: 'https://www.googleapis.com/youtube/v3/search',
                     params: {
                         part: 'snippet',
-                        q: query,
                         type: 'video',
-                        maxResults: 10,
-                    },
+                        maxResults: maxResults,
+                        order: 'date',
+                        safeSearch: 'strict',
+                        q: 'random' // You can modify the search query as needed
+                    }
                 });
             }).then(function (response) {
-                const videoContainer = document.getElementById('video-container');
-                videoContainer.innerHTML = '';
-
                 const items = response.result.items;
                 items.forEach((item) => {
                     const videoId = item.id.videoId;
                     const title = item.snippet.title;
                     const videoEmbed = `
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+                        <div class="video">
+                            <iframe width="320" height="180" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+                            <h2>${title}</h2>
+                        </div>
                     `;
 
-                    videoContainer.innerHTML += `
-                        <h2>${title}</h2>
-                        ${videoEmbed}
-                    `;
+                    const videoDiv = document.createElement('div');
+                    videoDiv.innerHTML = videoEmbed;
+                    videoContainer.appendChild(videoDiv);
                 });
             }, function (reason) {
                 console.log('Error: ' + reason.result.error.message);
             });
         }
+
+        // Fetch random videos when the page loads
+        window.addEventListener('load', fetchRandomVideos);
     </script>
 </body>
 </html>
