@@ -2,27 +2,31 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>For You Page</title>
+    <title>YouTube Emulator</title>
     <style>
         /* Your CSS styles go here */
     </style>
 </head>
 <body>
     <header>
-        <h1>For You Page</h1>
+        <h1>YouTube Emulator</h1>
     </header>
     <main>
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Search for videos">
+            <button id="search-button">Search</button>
+        </div>
         <div id="video-container">
-            <!-- Random video recommendations will be displayed here -->
+            <!-- Video search results will be displayed here -->
         </div>
     </main>
     <script src="https://www.googleapis.com/youtube/v3/"></script>
     <script>
-        // Replace 'YOUR_API_KEY' with the provided API key
+        // Replace 'YOUR_API_KEY' with your actual API key
         const apiKey = 'AIzaSyCmbY8cHUDc5lja1u29BW43GVXEEVxFW5I';
         const maxResults = 10;
 
-        function fetchRandomVideos() {
+        function searchYouTube(query) {
             const videoContainer = document.getElementById('video-container');
             videoContainer.innerHTML = '';
 
@@ -35,9 +39,7 @@
                         part: 'snippet',
                         type: 'video',
                         maxResults: maxResults,
-                        order: 'date',
-                        safeSearch: 'strict',
-                        q: 'random' // You can modify the search query as needed
+                        q: query
                     }
                 });
             }).then(function (response) {
@@ -61,8 +63,10 @@
             });
         }
 
-        // Fetch random videos when the page loads
-        window.addEventListener('load', fetchRandomVideos);
+        document.getElementById('search-button').addEventListener('click', () => {
+            const query = document.getElementById('search-input').value;
+            searchYouTube(query);
+        });
     </script>
 </body>
 </html>
