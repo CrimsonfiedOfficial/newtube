@@ -2,50 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Newtube FYP</title>
+    <title>For You Page</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #FF0000; /* Red header like YouTube */
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-        }
-
-        h1 {
-            margin: 0;
-        }
-
-        main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        #video-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .video {
-            margin: 20px;
-        }
-
-        iframe {
-            width: 320px;
-            height: 180px;
-        }
-
-        h2 {
-            margin: 10px 0;
-        }
+        /* Your CSS styles go here */
     </style>
 </head>
 <body>
@@ -61,7 +20,7 @@
     <script>
         // Replace 'YOUR_API_KEY' with the provided API key
         const apiKey = 'AIzaSyCmbY8cHUDc5lja1u29BW43GVXEEVxFW5I';
-        const maxResults = 100;
+        const maxResults = 10;
 
         function fetchRandomVideos() {
             const videoContainer = document.getElementById('video-container');
